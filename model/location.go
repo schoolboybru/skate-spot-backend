@@ -53,3 +53,42 @@ func AddLocation(newLocation Location) {
 		println(err.Error())
 	}
 }
+
+func GetAllLocationsFromCountry(country string) (*[]Location, error) {
+	var locations []Location
+	database, err := db.New()
+
+	if err != nil {
+		return nil, err
+	}
+
+	defer database.Close()
+
+	err = database.Select(&locations, `SELECT * FROM LOCATION WHERE country=$1`, country)
+
+	if err != nil {
+		return nil, err
+	}
+
+	return &locations, nil
+
+}
+
+func GetAllLocationsFromCity(city string) (*[]Location, error) {
+	var locations []Location
+	database, err := db.New()
+
+	if err != nil {
+		return nil, err
+	}
+
+	defer database.Close()
+
+	err = database.Select(&locations, `SELECT * FROM LOCATION WHERE city=$1`, city)
+
+	if err != nil {
+		return nil, err
+	}
+
+	return &locations, nil
+}

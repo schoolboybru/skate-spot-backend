@@ -23,6 +23,8 @@ func main() {
 			location := new(controllers.LocationController)
 			locationGroup.GET("/:id", location.GetLocation)
 			locationGroup.POST("/addLocation", location.AddLocation)
+			locationGroup.GET("/country/:id", location.GetLocationsByCountry)
+			locationGroup.GET("city/:id", location.GetLocationsByCity)
 		}
 	}
 

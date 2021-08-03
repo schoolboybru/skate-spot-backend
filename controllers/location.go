@@ -33,3 +33,29 @@ func (l LocationController) AddLocation(c *gin.Context) {
 	model.AddLocation(location)
 	c.JSON(http.StatusOK, gin.H{"new location": location.Name})
 }
+
+func (l LocationController) GetLocationsByCountry(c *gin.Context) {
+	if c.Param("id") != "" {
+		var country = c.Param("id")
+		locations, err := model.GetAllLocationsFromCountry(country)
+
+		if err != nil {
+			println(err)
+		}
+
+		c.JSON(http.StatusOK, gin.H{"locations": locations})
+	}
+}
+
+func (l LocationController) GetLocationsByCity(c *gin.Context) {
+	if c.Param("id") != "" {
+		var city = c.Param("id")
+		locations, err := model.GetAllLocationsFromCity(city)
+
+		if err != nil {
+			println(err)
+		}
+
+		c.JSON(http.StatusOK, gin.H{"locations": locations})
+	}
+}
