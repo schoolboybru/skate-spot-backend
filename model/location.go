@@ -17,7 +17,7 @@ type Location struct {
 	Country   string    `json:"country" binding:"required" db:"country"`
 }
 
-func GetById(id string) (*Location, error) {
+func GetLocationById(id string) (*Location, error) {
 	var location Location
 	database, err := db.New()
 

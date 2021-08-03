@@ -13,7 +13,7 @@ var locationModel = new(model.Location)
 
 func (l LocationController) GetLocation(c *gin.Context) {
 	if c.Param("id") != "" {
-		location, err := model.GetById(c.Param("id"))
+		location, err := model.GetLocationById(c.Param("id"))
 
 		if err != nil {
 			println(err)
