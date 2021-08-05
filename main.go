@@ -1,20 +1,25 @@
 package main
 
 import (
-	"log"
+	"time"
 
+	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
-	"github.com/joho/godotenv"
 	"github.com/schoolboybru/location-service/controllers"
 )
 
 func main() {
-	err := godotenv.Load()
-	if err != nil {
-		log.Fatal("Error loading .env file")
-	}
 
 	router := gin.Default()
+
+	router.Use(cors.New(cors.Config{
+		AllowOrigins:     []string{"http://localhost:8080"},
+		AllowMethods:     []string{"GET", "POST", "DELETE", "PUT"},
+		AllowHeaders:     []string{"Origin"},
+		ExposeHeaders:    []string{"Content-Length"},
+		AllowCredentials: true,
+		MaxAge:           12 * time.Hour,
+	}))
 
 	v1 := router.Group("v1")
 	{
@@ -28,5 +33,5 @@ func main() {
 		}
 	}
 
-	router.Run(":8080")
+	router.Run(":8000")
 }

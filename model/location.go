@@ -42,7 +42,7 @@ func AddLocation(newLocation Location) {
 	database, err := db.New()
 
 	if err != nil {
-		println(err)
+		println(err.Error())
 	}
 
 	defer database.Close()
