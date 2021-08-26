@@ -10,6 +10,7 @@ services:
       - .env
     depends_on:
       - locationservice
+      - redis
     environment:
       - HOST=${HOST}
       - PORT=${PORT}
