@@ -40,8 +40,15 @@ func (l LocationController) GetLocation(c *gin.Context) {
 func (l LocationController) AddLocation(c *gin.Context) {
 	var location model.Location
 	c.BindJSON(&location)
+
 	model.AddLocation(location)
-	c.JSON(http.StatusOK, gin.H{"new location": location.Name})
+	err := cache.SetLocation(location)
+
+	if err != nil {
+		println(err)
+	}
+
+	c.JSON(http.StatusOK, location)
 }
 
 func (l LocationController) GetLocationsByCountry(c *gin.Context) {

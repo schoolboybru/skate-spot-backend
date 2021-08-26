@@ -26,17 +26,19 @@ func GetLocation(name string) (*model.Location, error) {
 	return location, nil
 }
 
-func SetLocation(l model.Location) {
+func SetLocation(l model.Location) error {
 	c, err := NewCache()
 
 	if err != nil {
-		println("cannot connect to cache")
+		return err
 	}
 
 	err = c.Set(ctx, l.Name, l, 0).Err()
 
 	if err != nil {
-		panic(err)
+		return err
 	}
+
+	return nil
 
 }
