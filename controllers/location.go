@@ -4,15 +4,25 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
+	"github.com/schoolboybru/location-service/db/cache"
 	"github.com/schoolboybru/location-service/model"
 )
 
 type LocationController struct{}
 
-var locationModel = new(model.Location)
-
 func (l LocationController) GetLocation(c *gin.Context) {
 	if c.Param("id") != "" {
+		l, err := cache.GetLocation(c.Param("id"))
+
+		if err != nil {
+			println(err)
+		}
+
+		if l.City != "" {
+			c.JSON(http.StatusOK, l)
+			return
+		}
+
 		location, err := model.GetLocationById(c.Param("id"))
 
 		if err != nil {
