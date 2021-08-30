@@ -1,4 +1,4 @@
-package model
+package adding
 
 import (
 	"time"
@@ -35,23 +35,6 @@ func GetLocationById(id string) (*Location, error) {
 
 	return &location, nil
 
-}
-
-func AddLocation(newLocation Location) {
-
-	database, err := db.New()
-
-	if err != nil {
-		println(err.Error())
-	}
-
-	defer database.Close()
-
-	_, err = database.NamedExec(`INSERT INTO LOCATION (id, name, longitude, latitude, date, city, country) VALUES (:id, :name, :longitude, :latitude, :date, :city, :country)`, &newLocation)
-
-	if err != nil {
-		println(err.Error())
-	}
 }
 
 func GetAllLocationsFromCountry(country string) (*[]Location, error) {
