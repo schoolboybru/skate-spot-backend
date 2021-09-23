@@ -1,29 +1,22 @@
 package main
 
 import (
+	"github.com/schoolboybru/location-service/db"
 	"github.com/schoolboybru/location-service/internal/adding"
 	"github.com/schoolboybru/location-service/internal/http/rest"
 )
 
 func main() {
 
-	//router := gin.Default()
-	var adder adding.Service
+	repository, err := db.New()
 
-	handler := rest.Handler(adder)
+	if err != nil {
+		panic(err)
+	}
+
+	service := adding.New(repository)
+
+	handler := rest.Handler(service)
 
 	handler.Run(":8000")
-
-	//v1 := router.Group("v1")
-	//{
-	//	locationGroup := v1.Group("/location")
-	//	{
-	//		location := new(controllers.LocationController)
-	//		locationGroup.GET("/:id", location.GetLocation)
-	//		locationGroup.POST("/addLocation", location.AddLocation)
-	//		locationGroup.GET("/country/:id", location.GetLocationsByCountry)
-	//		locationGroup.GET("city/:id", location.GetLocationsByCity)
-	//	}
-	//}
-
 }

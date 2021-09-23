@@ -34,10 +34,10 @@ func addLocation(s adding.Service) func(c *gin.Context) {
 
 		c.JSON(http.StatusOK, location)
 
-		err := s.AddLocation(location)
+		err := s.AddLocation(&location)
 
 		if err != nil {
-			panic(err)
+			println(err)
 		}
 	}
 }

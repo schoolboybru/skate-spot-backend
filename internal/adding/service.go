@@ -1,42 +1,24 @@
 package adding
 
-import (
-	"github.com/schoolboybru/location-service/db"
-)
-
 type Service interface {
-	AddLocation(Location) error
+	AddLocation(location *Location) error
 }
 
 type Repository interface {
-	AddLocation(Location) error
+	AddLocation(location *Location) error
 }
 
 type service struct {
 	r Repository
 }
 
-func New() *service {
-	return &service{}
+func New(repository Repository) Service {
+	return &service{r: repository}
 }
 
-func (s *service) AddLocation(l Location) error {
+func (s *service) AddLocation(l *Location) error {
 
-	database, err := db.New()
-
-	if err != nil {
-		return err
-	}
-
-	defer database.Close()
-
-	_, err = database.NamedExec(`INSERT INTO LOCATION (id, name, longitude, latitude, date, city, country) VALUES (:id, :name, :longitude, :latitude, :date, :city, :country)`, &l)
-
-	if err != nil {
-		return err
-	}
-
-	return nil
+	return s.r.AddLocation(l)
 }
 
 //func (l LocationController) GetLocation(c *gin.Context) {
