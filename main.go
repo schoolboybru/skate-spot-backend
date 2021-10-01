@@ -1,35 +1,34 @@
 package main
 
 import (
-	"time"
-
-	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
-	"github.com/schoolboybru/location-service/controllers"
+	"github.com/schoolboybru/location-service/db"
+	adding "github.com/schoolboybru/location-service/internal/domain"
+	"github.com/schoolboybru/location-service/internal/http/rest"
 )
 
 func main() {
 
-	router := gin.Default()
+	repository, err := db.New()
 
-	router.Use(cors.New(cors.Config{
-		AllowOrigins:     []string{"http://localhost:8080"},
-		AllowMethods:     []string{"GET", "POST", "DELETE", "PUT"},
-		AllowHeaders:     []string{"Origin"},
-		ExposeHeaders:    []string{"Content-Length"},
-		AllowCredentials: true,
-		MaxAge:           12 * time.Hour,
-	}))
+	if err != nil {
+		panic(err)
+	}
+
+	service := adding.New(repository)
+
+	handler := rest.NewHandler(service)
+
+	router := gin.Default()
 
 	v1 := router.Group("v1")
 	{
 		locationGroup := v1.Group("/location")
 		{
-			location := new(controllers.LocationController)
-			locationGroup.GET("/:id", location.GetLocation)
-			locationGroup.POST("/addLocation", location.AddLocation)
-			locationGroup.GET("/country/:id", location.GetLocationsByCountry)
-			locationGroup.GET("city/:id", location.GetLocationsByCity)
+			locationGroup.GET("/:id", handler.Get)
+			locationGroup.POST("/addLocation", handler.Post)
+			locationGroup.GET("/country/:id", handler.GetByCountry)
+			locationGroup.GET("city/:id", handler.GetByCity)
 		}
 	}
 
