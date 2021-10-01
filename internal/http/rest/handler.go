@@ -7,37 +7,28 @@ import (
 	"github.com/schoolboybru/location-service/internal/adding"
 )
 
-func Handler(a adding.Service) *gin.Engine {
-
-	router := gin.Default()
-
-	v1 := router.Group("v1")
-	{
-		locationGroup := v1.Group("/location")
-		{
-			//locationGroup.GET("/:id", location.GetLocation)
-			locationGroup.POST("/addLocation", addLocation(a))
-			//locationGroup.GET("/country/:id", location.GetLocationsByCountry)
-			//locationGroup.GET("city/:id", location.GetLocationsByCity)
-		}
-	}
-
-	return router
-
+type LocationHandler interface {
+	Post(c *gin.Context)
 }
 
-func addLocation(s adding.Service) func(c *gin.Context) {
+type handler struct {
+	addingService adding.Service
+}
 
-	var location adding.Location
-	return func(c *gin.Context) {
-		c.BindJSON(&location)
+func NewHandler(a adding.Service) LocationHandler {
+	return &handler{addingService: a}
+}
 
-		c.JSON(http.StatusOK, location)
+func (h *handler) Post(c *gin.Context) {
+	location := adding.Location{}
 
-		err := s.AddLocation(&location)
+	c.BindJSON(&location)
 
-		if err != nil {
-			println(err)
-		}
+	c.JSON(http.StatusOK, location)
+
+	err := h.addingService.AddLocation(&location)
+
+	if err != nil {
+		println(err)
 	}
 }
