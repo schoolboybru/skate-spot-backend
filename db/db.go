@@ -8,7 +8,7 @@ import (
 	"github.com/jmoiron/sqlx"
 	"github.com/joho/godotenv"
 	_ "github.com/lib/pq"
-	"github.com/schoolboybru/location-service/internal/adding"
+	adding "github.com/schoolboybru/location-service/internal/domain"
 )
 
 type postgresRepository struct {
@@ -61,4 +61,55 @@ func (p *postgresRepository) AddLocation(l *adding.Location) error {
 	}
 
 	return nil
+}
+
+func (p *postgresRepository) GetLocation(id string) (*adding.Location, error) {
+
+	var location adding.Location
+
+	client := p.db
+
+	defer client.Close()
+
+	err := client.Get(&location, "SELECT * FROM Location WHERE id=$1", id)
+
+	if err != nil {
+		println(err.Error())
+	}
+
+	return &location, nil
+}
+
+func (p *postgresRepository) GetLocationsByCity(id string) (*[]adding.Location, error) {
+
+	var locations []adding.Location
+
+	client := p.db
+
+	defer client.Close()
+
+	err := client.Select(&locations, `SELECT * FROM LOCATION WHERE city=$1`, id)
+
+	if err != nil {
+		return nil, err
+	}
+
+	return &locations, nil
+}
+
+func (p *postgresRepository) GetLocationsByCountry(id string) (*[]adding.Location, error) {
+
+	var locations []adding.Location
+
+	client := p.db
+
+	defer client.Close()
+
+	err := client.Select(&locations, `SELECT * FROM LOCATION WHERE country=$1`, id)
+
+	if err != nil {
+		return nil, err
+	}
+
+	return &locations, nil
 }
