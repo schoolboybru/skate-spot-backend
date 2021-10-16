@@ -1,4 +1,4 @@
-package db
+package postgres
 
 import (
 	"fmt"
@@ -8,14 +8,16 @@ import (
 	"github.com/jmoiron/sqlx"
 	"github.com/joho/godotenv"
 	_ "github.com/lib/pq"
-	adding "github.com/schoolboybru/location-service/internal/domain"
+	"github.com/schoolboybru/location-service/internal/repositories"
+
+	"github.com/schoolboybru/location-service/internal/domain"
 )
 
-type postgresRepository struct {
+type PostgresRepository struct {
 	db *sqlx.DB
 }
 
-func New() (adding.Repository, error) {
+func New() (repositories.LocationRepository, error) {
 
 	godotenv.Load(".env")
 
@@ -38,7 +40,7 @@ func New() (adding.Repository, error) {
 		return nil, err
 	}
 
-	repo := &postgresRepository{db: database}
+	repo := &PostgresRepository{db: database}
 
 	return repo, nil
 
@@ -48,7 +50,7 @@ func ConnString(host string, port int, user string, password string, dbName stri
 	return fmt.Sprintf("host=%s port=%d user=%s password=%s dbname=%s sslmode=disable", host, port, user, password, dbName)
 }
 
-func (p *postgresRepository) AddLocation(l *adding.Location) error {
+func (p *PostgresRepository) AddLocation(l *domain.Location) error {
 
 	client := p.db
 
@@ -63,9 +65,9 @@ func (p *postgresRepository) AddLocation(l *adding.Location) error {
 	return nil
 }
 
-func (p *postgresRepository) GetLocation(id string) (*adding.Location, error) {
+func (p *PostgresRepository) GetLocation(id string) (*domain.Location, error) {
 
-	var location adding.Location
+	var location domain.Location
 
 	client := p.db
 
@@ -80,9 +82,9 @@ func (p *postgresRepository) GetLocation(id string) (*adding.Location, error) {
 	return &location, nil
 }
 
-func (p *postgresRepository) GetLocationsByCity(id string) (*[]adding.Location, error) {
+func (p *PostgresRepository) GetLocationsByCity(id string) (*[]domain.Location, error) {
 
-	var locations []adding.Location
+	var locations []domain.Location
 
 	client := p.db
 
@@ -97,9 +99,9 @@ func (p *postgresRepository) GetLocationsByCity(id string) (*[]adding.Location, 
 	return &locations, nil
 }
 
-func (p *postgresRepository) GetLocationsByCountry(id string) (*[]adding.Location, error) {
+func (p *PostgresRepository) GetLocationsByCountry(id string) (*[]domain.Location, error) {
 
-	var locations []adding.Location
+	var locations []domain.Location
 
 	client := p.db
 

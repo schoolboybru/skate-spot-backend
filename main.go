@@ -2,20 +2,20 @@ package main
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/schoolboybru/location-service/db"
-	adding "github.com/schoolboybru/location-service/internal/domain"
 	"github.com/schoolboybru/location-service/internal/http/rest"
+	"github.com/schoolboybru/location-service/internal/repositories/postgres"
+	"github.com/schoolboybru/location-service/internal/services/logic"
 )
 
 func main() {
 
-	repository, err := db.New()
+	repository, err := postgres.New()
 
 	if err != nil {
 		panic(err)
 	}
 
-	service := adding.New(repository)
+	service := logic.New(repository)
 
 	handler := rest.NewHandler(service)
 

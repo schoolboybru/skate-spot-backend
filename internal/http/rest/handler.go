@@ -5,6 +5,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/schoolboybru/location-service/internal/domain"
+	"github.com/schoolboybru/location-service/internal/services"
 )
 
 type LocationHandler interface {
@@ -15,11 +16,11 @@ type LocationHandler interface {
 }
 
 type handler struct {
-	addingService domain.Service
+	locationService services.LocationService
 }
 
-func NewHandler(a domain.Service) LocationHandler {
-	return &handler{addingService: a}
+func NewHandler(a services.LocationService) LocationHandler {
+	return &handler{locationService: a}
 }
 
 func (h *handler) Post(c *gin.Context) {
@@ -29,7 +30,7 @@ func (h *handler) Post(c *gin.Context) {
 
 	c.JSON(http.StatusOK, location)
 
-	err := h.addingService.AddLocation(&location)
+	err := h.locationService.AddLocation(&location)
 
 	if err != nil {
 		println(err)
@@ -50,7 +51,7 @@ func (h *handler) Get(c *gin.Context) {
 		//	return
 		//}
 
-		location, err := h.addingService.GetLocation(c.Param("id"))
+		location, err := h.locationService.GetLocation(c.Param("id"))
 
 		if err != nil {
 			println(err)
@@ -68,7 +69,7 @@ func (h *handler) GetByCity(c *gin.Context) {
 
 	if c.Param("id") != "" {
 		var city = c.Param("id")
-		locations, err := h.addingService.GetLocationsByCity(city)
+		locations, err := h.locationService.GetLocationsByCity(city)
 
 		if err != nil {
 			println(err)
@@ -82,7 +83,7 @@ func (h *handler) GetByCountry(c *gin.Context) {
 
 	if c.Param("id") != "" {
 		var country = c.Param("id")
-		locations, err := h.addingService.GetLocationsByCountry(country)
+		locations, err := h.locationService.GetLocationsByCountry(country)
 
 		if err != nil {
 			println(err)
