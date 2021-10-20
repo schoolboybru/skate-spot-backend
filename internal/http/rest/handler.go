@@ -40,16 +40,6 @@ func (h *handler) Post(c *gin.Context) {
 func (h *handler) Get(c *gin.Context) {
 
 	if c.Param("id") != "" {
-		//l, err := cache.GetLocation(c.Param("id"))
-
-		//if err != nil {
-		//	println(err)
-		//}
-
-		//if l.City != "" {
-		//	c.JSON(http.StatusOK, l)
-		//	return
-		//}
 
 		location, err := h.locationService.GetLocation(c.Param("id"))
 

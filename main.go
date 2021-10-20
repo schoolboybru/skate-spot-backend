@@ -3,6 +3,7 @@ package main
 import (
 	"github.com/gin-gonic/gin"
 	"github.com/schoolboybru/location-service/internal/http/rest"
+	"github.com/schoolboybru/location-service/internal/repositories/cache"
 	"github.com/schoolboybru/location-service/internal/repositories/postgres"
 	"github.com/schoolboybru/location-service/internal/services/logic"
 )
@@ -15,7 +16,13 @@ func main() {
 		panic(err)
 	}
 
-	service := logic.New(repository)
+	cache, err := cache.NewCache()
+
+	if err != nil {
+		panic(err)
+	}
+
+	service := logic.New(repository, cache)
 
 	handler := rest.NewHandler(service)
 
