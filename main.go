@@ -3,9 +3,9 @@ package main
 import (
 	"github.com/gin-gonic/gin"
 	"github.com/schoolboybru/location-service/internal/http/rest"
-	"github.com/schoolboybru/location-service/internal/repositories/cache"
 	"github.com/schoolboybru/location-service/internal/repositories/postgres"
-	"github.com/schoolboybru/location-service/internal/services/logic"
+	"github.com/schoolboybru/location-service/internal/services"
+	"github.com/schoolboybru/location-service/internal/http/rest/routes"
 )
 
 func main() {
@@ -16,28 +16,15 @@ func main() {
 		panic(err)
 	}
 
-	cache, err := cache.NewCache()
-
-	if err != nil {
-		panic(err)
-	}
-
-	service := logic.New(repository, cache)
+	service := services.New(repository)
 
 	handler := rest.NewHandler(service)
 
 	router := gin.Default()
 
 	v1 := router.Group("v1")
-	{
-		locationGroup := v1.Group("/location")
-		{
-			locationGroup.GET("/:id", handler.Get)
-			locationGroup.POST("/addLocation", handler.Post)
-			locationGroup.GET("/country/:id", handler.GetByCountry)
-			locationGroup.GET("city/:id", handler.GetByCity)
-		}
-	}
+    routes.AddCommentRoutes(v1, handler)
+    routes.AddLocationRoutes(v1, handler)
 
 	router.Run(":8000")
 }

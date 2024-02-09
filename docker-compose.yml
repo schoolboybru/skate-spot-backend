@@ -13,16 +13,20 @@ services:
       - PORT=${PORT}
       - PASSWORD=${PASSWORD}
       - NAME=${NAME}
+      - USER=${USER}  
       - GIN_MODE=release
+    env_file:
+      - .env
 
   db:
     image: "postgres:12-alpine"
     env_file:
       - .env
     environment:
-      - POSTGRES_DB=${NAME}
-      - POSTGRES_USER=${PGUSER}
       - POSTGRES_PASSWORD=${PASSWORD}
+      - POSTGRES_USER=${USER}
+      - PGUSER=${USER}
+      - POSTGRES_DB=${NAME}
     ports:
       - 5432:5432
   
@@ -30,6 +34,4 @@ services:
     image: 'bitnami/redis:latest'
     environment:
       - ALLOW_EMPTY_PASSWORD=yes
-
-    
     
