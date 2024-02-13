@@ -1,4 +1,4 @@
-module github.com/schoolboybru/location-service
+module github.com/schoolboybru/skate-spot
 
 go 1.15
 

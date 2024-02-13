@@ -1,6 +1,11 @@
 package postgres
 
-import "github.com/schoolboybru/location-service/internal/domain"
+import "github.com/schoolboybru/skate-spot/internal/domain"
+
+type CommentRepository interface {
+	AddComment(comment *domain.Comment) error
+	GetComments(postId string) (*[]domain.Comment, error)
+}
 
 func (p *PostgresRepository) AddComment(c *domain.Comment) error {
 
@@ -16,11 +21,11 @@ func (p *PostgresRepository) AddComment(c *domain.Comment) error {
 }
 
 func (p *PostgresRepository) GetComments(postId string) (*[]domain.Comment, error) {
-    var comments []domain.Comment
+	var comments []domain.Comment
 
 	client := p.db
 
-    err := client.Select(&comments, `SELECT * FROM COMMENT WHERE post_id = $1`, postId)
+	err := client.Select(&comments, `SELECT * FROM COMMENT WHERE post_id = $1`, postId)
 
 	if err != nil {
 		return nil, err

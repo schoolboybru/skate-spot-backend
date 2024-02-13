@@ -8,24 +8,12 @@ import (
 	"github.com/jmoiron/sqlx"
 	"github.com/joho/godotenv"
 	_ "github.com/lib/pq"
-	"github.com/schoolboybru/location-service/internal/domain"
 )
 
-type LocationRepository interface {
-	AddLocation(location *domain.Location) error
-	GetLocation(id string) (*domain.Location, error)
-	GetLocationsByCity(id string) (*[]domain.Location, error)
-	GetLocationsByCountry(id string) (*[]domain.Location, error)
-}
-
-type CommentRepository interface {
-    AddComment(comment *domain.Comment) error
-    GetComments(postId string) (*[]domain.Comment, error)
-}
-
 type DatabaseRepository interface {
-    LocationRepository
-    CommentRepository
+	LocationRepository
+	CommentRepository
+	PostRespository
 }
 
 type PostgresRepository struct {
@@ -34,7 +22,7 @@ type PostgresRepository struct {
 
 func New() (DatabaseRepository, error) {
 
-    godotenv.Load(".env")
+	godotenv.Load(".env")
 
 	dbhost := os.Getenv("HOST")
 	dbuser := os.Getenv("USER")
@@ -42,9 +30,9 @@ func New() (DatabaseRepository, error) {
 	dbPassword := os.Getenv("PASSWORD")
 	dbport, err := strconv.Atoi(os.Getenv("PORT"))
 
-    if err != nil {
-        println(err)
-    }
+	if err != nil {
+		println(err)
+	}
 
 	conn := ConnString(dbhost, dbport, dbuser, dbPassword, dbname)
 	database, err := sqlx.Connect("postgres", conn)

@@ -14,4 +14,5 @@ type Location struct {
 	Date      time.Time `json:"date" binding:"required" db:"date"`
 	City      string    `json:"city" binding:"required" db:"city"`
 	Country   string    `json:"country" binding:"required" db:"country"`
+	ImageUrl  string    `json:"image_url" binding:"required" db:"image_url"`
 }

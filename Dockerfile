@@ -14,6 +14,6 @@ COPY . .
 RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build
 
 FROM scratch
-COPY --from=builder /app/location-service /app/
+COPY --from=builder /app/skate-spot /app/
 EXPOSE 8000
-ENTRYPOINT ["/app/location-service"]
+ENTRYPOINT ["/app/skate-spot"]

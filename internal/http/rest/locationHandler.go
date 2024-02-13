@@ -4,7 +4,7 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
-	"github.com/schoolboybru/location-service/internal/domain"
+	"github.com/schoolboybru/skate-spot/internal/domain"
 )
 
 type LocationHandler interface {
@@ -17,11 +17,11 @@ type LocationHandler interface {
 func (h *handler) Post(c *gin.Context) {
 	location := domain.Location{}
 
-    err := c.BindJSON(&location)
+	err := c.BindJSON(&location)
 
-    if err != nil {
-        println(err.Error())
-    }
+	if err != nil {
+		println(err.Error())
+	}
 
 	c.JSON(http.StatusOK, location)
 

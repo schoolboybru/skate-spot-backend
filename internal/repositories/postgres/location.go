@@ -1,6 +1,13 @@
 package postgres
 
-import "github.com/schoolboybru/location-service/internal/domain"
+import "github.com/schoolboybru/skate-spot/internal/domain"
+
+type LocationRepository interface {
+	AddLocation(location *domain.Location) error
+	GetLocation(id string) (*domain.Location, error)
+	GetLocationsByCity(id string) (*[]domain.Location, error)
+	GetLocationsByCountry(id string) (*[]domain.Location, error)
+}
 
 func (p *PostgresRepository) AddLocation(l *domain.Location) error {
 

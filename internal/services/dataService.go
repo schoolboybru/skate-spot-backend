@@ -1,8 +1,8 @@
 package services
 
 import (
-	"github.com/schoolboybru/location-service/internal/repositories/cache"
-	"github.com/schoolboybru/location-service/internal/repositories/postgres"
+	"github.com/schoolboybru/skate-spot/internal/repositories/cache"
+	"github.com/schoolboybru/skate-spot/internal/repositories/postgres"
 )
 
 type service struct {
@@ -11,8 +11,9 @@ type service struct {
 }
 
 type Services interface {
-    CommentService
-    LocationService
+	CommentService
+	LocationService
+	PostService
 }
 
 func New(repository postgres.DatabaseRepository) Services {

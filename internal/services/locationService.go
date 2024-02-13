@@ -1,7 +1,7 @@
 package services
 
 import (
-	"github.com/schoolboybru/location-service/internal/domain"
+	"github.com/schoolboybru/skate-spot/internal/domain"
 )
 
 type LocationService interface {

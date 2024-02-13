@@ -4,7 +4,7 @@ import (
 	"context"
 
 	"github.com/go-redis/redis/v8"
-	"github.com/schoolboybru/location-service/internal/domain"
+	"github.com/schoolboybru/skate-spot/internal/domain"
 )
 
 var ctx = context.Background()

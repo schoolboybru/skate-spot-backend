@@ -1,12 +1,13 @@
 package rest
 
 import (
-	"github.com/schoolboybru/location-service/internal/services"
+	"github.com/schoolboybru/skate-spot/internal/services"
 )
 
 type Handlers interface {
-    LocationHandler
-    CommentHandler
+	LocationHandler
+	CommentHandler
+	PostHandler
 }
 
 type handler struct {
@@ -16,4 +17,3 @@ type handler struct {
 func NewHandler(s services.Services) Handlers {
 	return &handler{services: s}
 }
-

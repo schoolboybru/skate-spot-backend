@@ -1,7 +1,7 @@
 version: '3'
 
 services:
-  location-service-api:
+  skate-spot-api:
     build: .
     ports:
       - 8000:8000
@@ -19,7 +19,7 @@ services:
       - .env
 
   db:
-    image: "postgres:12-alpine"
+    image: "postgres:13-alpine"
     env_file:
       - .env
     environment:
